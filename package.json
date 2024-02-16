@@ -1,0 +1,22 @@
+{
+  "name": "evangadi-forum",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janbuca/Evangadi-Forum-Project.git"
+  },
+  "author": "janbuca",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janbuca/Evangadi-Forum-Project/issues"
+  },
+  "homepage": "https://github.com/janbuca/Evangadi-Forum-Project#readme",
+  "dependencies": {
+    "mysql2": "^3.9.1"
+  }
+}
