@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/janbuca/Evangadi-Forum-Project#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "http-status-codes": "^2.3.0",
