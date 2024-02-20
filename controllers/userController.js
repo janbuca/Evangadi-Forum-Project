@@ -1,18 +1,45 @@
-function register(req, res) {
-    res.send("Registering new user");
+const dbconnection = require("../db/dbConfig");
+
+async function register(req, res) {
+  const { username, email, firstname, lastname, password } = req.body;
+  if (!username || !email || !firstname || !lastname || !password) {
+    return res.status(400).json({ msg: "Please enter all fields" });
+  }
+  try {
+    const [user] = await dbconnection.query(
+      "SELECT username, userid FROM users WHERE username = ? OR email = ?",
+      [username, email]
+    );
+    if (user.length > 0) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ msg: "Password must be at least 8 characters" });
+    }
+
+    await dbconnection.query(
+      "INSERT INTO users (username, email, firstname, lastname, password) VALUES(?, ?, ?, ?,?)",
+      [username, email, firstname, lastname, password]
+    );
+    res.status(201).json({ msg: "User register" });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json("something went wrong, try again later!");
+  }
 }
 
-function login(req, res) {
-    res.send("Login  new user");
+async function login(req, res) {
+  res.send("Login  new user");
 }
 
-function checkUser(req, res) {
-    res.send("Check new user");
+async function checkUser(req, res) {
+  res.send("Check new user");
 }
-
 
 module.exports = {
-    register,
-    login,
-    checkUser,
-  };
+  register,
+  login,
+  checkUser,
+};

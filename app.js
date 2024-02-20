@@ -12,6 +12,9 @@ const userRoutes = require("./routes/userRoute")
 // questions routes middleware file
 // answer route middleware file 
 
+// json middleware to extract json data
+app.use(express.json());
+
 async function start() {
 	try {
 		const result = await dbconnection.execute("select 'test'");
