@@ -1,10 +1,11 @@
 const dbconnection = require("../db/dbConfig");
 const bcrypt = require("bcrypt");
+const {StatusCodes} = require("http-status-codes")
 
 async function register(req, res) {
   const { username, email, firstname, lastname, password } = req.body;
   if (!username || !email || !firstname || !lastname || !password) {
-    return res.status(400).json({ msg: "Please enter all fields" });
+    return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please enter all fields" });
   }
   try {
     const [user] = await dbconnection.query(
@@ -16,7 +17,7 @@ async function register(req, res) {
     }
     if (password.length < 8) {
       return res
-        .status(400)
+        .status(StatusCodes.BAD_REQUEST)
         .json({ msg: "Password must be at least 8 characters" });
     }
 
@@ -27,10 +28,10 @@ async function register(req, res) {
       "INSERT INTO users (username, email, firstname, lastname, password) VALUES(?, ?, ?, ?,?)",
       [username, email, firstname, lastname, hashedPassword]
     );
-    res.status(201).json({ msg: "User register" });
+    res.status(StatusCodes.CREATED).json({ msg: "User register" });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json("something went wrong, try again later!");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("something went wrong, try again later!");
   }
 }
 
