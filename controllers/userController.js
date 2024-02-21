@@ -1,11 +1,13 @@
 const dbconnection = require("../db/dbConfig");
 const bcrypt = require("bcrypt");
-const {StatusCodes} = require("http-status-codes")
+const { StatusCodes } = require("http-status-codes");
 
 async function register(req, res) {
   const { username, email, firstname, lastname, password } = req.body;
   if (!username || !email || !firstname || !lastname || !password) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please enter all fields" });
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "Please enter all fields" });
   }
   try {
     const [user] = await dbconnection.query(
@@ -31,12 +33,42 @@ async function register(req, res) {
     res.status(StatusCodes.CREATED).json({ msg: "User register" });
   } catch (error) {
     console.log(error.message);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("something went wrong, try again later!");
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json("something went wrong, try again later!");
   }
 }
 
 async function login(req, res) {
-  res.send("Login  new user");
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "Please enter all fields" });
+  }
+  try {
+    const [user] = await dbconnection.query(
+      "SELECT username,userid,password FROM users WHERE email=?",
+      [email]
+    );
+    
+    if(user.length==0){
+      return res.status(StatusCodes.BAD_REQUEST).json({
+          msg:"invalid credential"
+      });
+  }
+  // compare password 
+  const isMatch = await bcrypt.compare(password,user[0].password)
+  if(!isMatch){
+      return res.status(StatusCodes.BAD_REQUEST).json({msg:"invalid credential"})
+  }
+  return res.json({user})
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "something went wrong, try again later!" });
+  }
 }
 
 async function checkUser(req, res) {
