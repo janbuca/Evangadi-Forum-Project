@@ -1,5 +1,5 @@
 const mysql2 = require('mysql2');
-
+require("dotenv").config();
 const dbconnection = mysql2.createPool({
   user: process.env.USER,
   host: "localhost",
@@ -8,15 +8,6 @@ const dbconnection = mysql2.createPool({
   connectionLimit:10,
 });
 
-// console.log(process.env.JWT_SECRET);
-
-// dbconnection.execute("select 'DB Connected!' ", (err, result)=>{
-//     if(err){
-//         console.log(err.message);
-//     }else{
-//         console.log(result);
-//     }
-// })
 
 module.exports = dbconnection.promise();
 
