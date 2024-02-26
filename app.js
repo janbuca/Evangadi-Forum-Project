@@ -19,7 +19,16 @@ const dbconnection = require("./db/dbConfig");
 const userRoutes = require("./routes/userRoute");
 
 // questions routes middleware file
-// answer route middleware file
+const questionsRoutes = require("./routes/questionRoute");
+
+// authentication middleware file
+const authMiddleware = require("./middleware/authMiddleware");
+
+// answer route middleware 
+const answerRoutes = require("./routes/answerRoute")
+
+// Apply helmet middleware
+app.use(helmet());
 
 // json middleware to extract json data
 app.use(express.json());
