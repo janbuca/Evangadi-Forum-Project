@@ -8,7 +8,7 @@ const dbconnection = mysql2.createPool({
   connectionLimit:10,
 });
 
-console.log(process.env.JWT_SECRET);
+// console.log(process.env.JWT_SECRET);
 
 // dbconnection.execute("select 'DB Connected!' ", (err, result)=>{
 //     if(err){
