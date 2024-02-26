@@ -1,18 +1,21 @@
-require("dotenv").config();
+// require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const port = 5500;
 
 // const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
-const cors = require("cors");
+// db connection
+const dbconnection = require("./db/dbConfig");
+
+
 app.use(cors());
 
 // parse requests of content-type - application/json
 
-// db connection
-const dbconnection = require("./db/dbConfig");
+
 
 // use routes middleware file
 //const userRoutes = require("./routes/userRoute");
@@ -32,6 +35,14 @@ app.use(helmet());
 
 // json middleware to extract json data
 app.use(express.json());
+
+
+// questions routes middleware??
+app.use("/api/questions",authMiddleware, questionsRoutes);
+
+// answers routes middleware??
+app.use("/api/answer",authMiddleware, answerRoutes);
+
 
 async function start() {
   try {
