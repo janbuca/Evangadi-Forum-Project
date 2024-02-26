@@ -3,6 +3,11 @@
  const app = express();
 const port = 5500;
 
+const cors = require('cors')
+app.use(cors())
+
+// parse requests of content-type - application/json
+
 // db connection
 const dbconnection = require("./db/dbConfig");
 

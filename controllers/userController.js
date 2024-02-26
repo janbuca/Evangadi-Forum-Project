@@ -8,7 +8,7 @@ async function register(req, res) {
   if (!username || !email || !firstname || !lastname || !password) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Please enter all fields" });
+      .json({ msg: "please provide all required information!" });
   }
   try {
     const [user] = await dbconnection.query(
@@ -16,7 +16,7 @@ async function register(req, res) {
       [username, email]
     );
     if (user.length > 0) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ msg: "User already Registered" });
     }
     if (password.length < 8) {
       return res
@@ -31,12 +31,12 @@ async function register(req, res) {
       "INSERT INTO users (username, email, firstname, lastname, password) VALUES(?, ?, ?, ?,?)",
       [username, email, firstname, lastname, hashedPassword]
     );
-    res.status(StatusCodes.CREATED).json({ msg: "User register" });
+    res.status(StatusCodes.CREATED).json({ msg: "user register" });
   } catch (error) {
     console.log(error.message);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json("something went wrong, try again later!");
+      .json("something will be wrong, try again later!");
   }
 }
 
@@ -45,7 +45,7 @@ async function login(req, res) {
   if (!email || !password) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Please enter all fields" });
+      .json({ msg: "Please enter all required fields" });
   }
   try {
     const [user] = await dbconnection.query(
